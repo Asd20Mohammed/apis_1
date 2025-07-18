@@ -1,0 +1,1630 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+    "title": "News API",
+    "description": "A comprehensive News API with JWT authentication for posting and managing news articles with MongoDB",
+    "contact": {
+    "name": "News API Support",
+    "email": "support@newsapi.com"
+    },
+    "version": "v1"
+    },
+    "paths": {
+    "/api/Auth/register": {
+    "post": {
+    "tags": [
+    "Auth"
+    ],
+    "summary": "Register a new user and return JWT token",
+    "requestBody": {
+    "description": "User registration data",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateUserDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateUserDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateUserDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "201": {
+    "description": "User registered successfully with JWT token",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/AuthResponse"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data or username/email already exists",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/Auth/login": {
+    "post": {
+    "tags": [
+    "Auth"
+    ],
+    "summary": "Authenticate user and return JWT token",
+    "requestBody": {
+    "description": "Login credentials",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/LoginDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/LoginDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/LoginDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "200": {
+    "description": "Authentication successful with JWT token",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/AuthResponse"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "401": {
+    "description": "Invalid credentials",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/Auth/profile": {
+    "get": {
+    "tags": [
+    "Auth"
+    ],
+    "summary": "Get current user profile (requires authentication)",
+    "responses": {
+    "200": {
+    "description": "Returns current user profile",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    },
+    "401": {
+    "description": "Authentication required",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "User not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    },
+    "put": {
+    "tags": [
+    "Auth"
+    ],
+    "summary": "Update current user profile (requires authentication)",
+    "requestBody": {
+    "description": "User update data",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateUserDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateUserDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateUserDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "200": {
+    "description": "Profile updated successfully",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "401": {
+    "description": "Authentication required",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "User not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/Auth/validate-token": {
+    "post": {
+    "tags": [
+    "Auth"
+    ],
+    "summary": "Validate JWT token",
+    "requestBody": {
+    "description": "Token validation request",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/RefreshTokenRequest"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/RefreshTokenRequest"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/RefreshTokenRequest"
+    }
+    }
+    }
+    },
+    "responses": {
+    "200": {
+    "description": "Token is valid",
+    "content": {
+    "application/json": {
+    "schema": {}
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid or expired token",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/Auth/refresh": {
+    "post": {
+    "tags": [
+    "Auth"
+    ],
+    "summary": "Refresh JWT token (requires authentication)",
+    "responses": {
+    "200": {
+    "description": "Token refreshed successfully",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/AuthResponse"
+    }
+    }
+    }
+    },
+    "401": {
+    "description": "Authentication required",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "User not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/News": {
+    "get": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Get all news articles",
+    "responses": {
+    "200": {
+    "description": "Returns the list of news articles",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "array",
+    "items": {
+    "$ref": "#/components/schemas/News"
+    }
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    },
+    "post": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Create a new news article (requires authentication)",
+    "requestBody": {
+    "description": "The news article data to create",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateNewsDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateNewsDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateNewsDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "201": {
+    "description": "News article created successfully",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/News"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "401": {
+    "description": "Authentication required",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/News/{id}": {
+    "get": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Get news by ID",
+    "parameters": [
+    {
+    "name": "id",
+    "in": "path",
+    "description": "The MongoDB ObjectId of the news article",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Returns the news article",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/News"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "News article not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    },
+    "put": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Update an existing news article (requires authentication)",
+    "parameters": [
+    {
+    "name": "id",
+    "in": "path",
+    "description": "The news article ID to update",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "requestBody": {
+    "description": "The news article data to update",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateNewsDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateNewsDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateNewsDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "200": {
+    "description": "News article updated successfully",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/News"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "401": {
+    "description": "Authentication required",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "News article not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    },
+    "delete": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Delete a news article (requires authentication)",
+    "parameters": [
+    {
+    "name": "id",
+    "in": "path",
+    "description": "The news article ID to delete",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "204": {
+    "description": "News article deleted successfully"
+    },
+    "401": {
+    "description": "Authentication required",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "News article not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/News/published": {
+    "get": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Get published news articles",
+    "responses": {
+    "200": {
+    "description": "OK",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "array",
+    "items": {
+    "$ref": "#/components/schemas/News"
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    },
+    "/api/News/category/{category}": {
+    "get": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Get news by category",
+    "parameters": [
+    {
+    "name": "category",
+    "in": "path",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "OK",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "array",
+    "items": {
+    "$ref": "#/components/schemas/News"
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    },
+    "/api/News/search": {
+    "get": {
+    "tags": [
+    "News"
+    ],
+    "summary": "Search news articles",
+    "parameters": [
+    {
+    "name": "searchTerm",
+    "in": "query",
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "OK",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "array",
+    "items": {
+    "$ref": "#/components/schemas/News"
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    },
+    "/api/User": {
+    "get": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Get all users",
+    "responses": {
+    "200": {
+    "description": "Returns the list of users",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "array",
+    "items": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/{id}": {
+    "get": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Get user by ID",
+    "parameters": [
+    {
+    "name": "id",
+    "in": "path",
+    "description": "The MongoDB ObjectId of the user",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Returns the user",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "User not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    },
+    "put": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Update an existing user",
+    "parameters": [
+    {
+    "name": "id",
+    "in": "path",
+    "description": "The user ID to update",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "requestBody": {
+    "description": "The user data to update",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateUserDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateUserDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/UpdateUserDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "200": {
+    "description": "User updated successfully",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data or username/email already exists",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "User not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    },
+    "delete": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Delete a user",
+    "parameters": [
+    {
+    "name": "id",
+    "in": "path",
+    "description": "The user ID to delete",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "204": {
+    "description": "User deleted successfully"
+    },
+    "404": {
+    "description": "User not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/username/{username}": {
+    "get": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Get user by username",
+    "parameters": [
+    {
+    "name": "username",
+    "in": "path",
+    "description": "The username to search for",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Returns the user",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    },
+    "404": {
+    "description": "User not found",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/role/{role}": {
+    "get": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Get users by role",
+    "parameters": [
+    {
+    "name": "role",
+    "in": "path",
+    "description": "The role to filter by",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Returns the list of users",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "array",
+    "items": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/search": {
+    "get": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Search users",
+    "parameters": [
+    {
+    "name": "searchTerm",
+    "in": "query",
+    "description": "Search term to look for in username, email, first name, or last name",
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Returns the list of users",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "array",
+    "items": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Search term is required",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/register": {
+    "post": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Register a new user",
+    "requestBody": {
+    "description": "The user data to create",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateUserDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateUserDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/CreateUserDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "201": {
+    "description": "User created successfully",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data or username/email already exists",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/login": {
+    "post": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Authenticate a user",
+    "requestBody": {
+    "description": "Login credentials",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/LoginDto"
+    }
+    },
+    "text/json": {
+    "schema": {
+    "$ref": "#/components/schemas/LoginDto"
+    }
+    },
+    "application/*+json": {
+    "schema": {
+    "$ref": "#/components/schemas/LoginDto"
+    }
+    }
+    }
+    },
+    "responses": {
+    "200": {
+    "description": "Authentication successful",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/User"
+    }
+    }
+    }
+    },
+    "400": {
+    "description": "Invalid input data",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "401": {
+    "description": "Invalid credentials",
+    "content": {
+    "application/json": {
+    "schema": {
+    "$ref": "#/components/schemas/ProblemDetails"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/check-username/{username}": {
+    "get": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Check if username is available",
+    "parameters": [
+    {
+    "name": "username",
+    "in": "path",
+    "description": "Username to check",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Returns availability status",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "boolean"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    },
+    "/api/User/check-email/{email}": {
+    "get": {
+    "tags": [
+    "User"
+    ],
+    "summary": "Check if email is available",
+    "parameters": [
+    {
+    "name": "email",
+    "in": "path",
+    "description": "Email to check",
+    "required": true,
+    "schema": {
+    "type": "string"
+    }
+    }
+    ],
+    "responses": {
+    "200": {
+    "description": "Returns availability status",
+    "content": {
+    "application/json": {
+    "schema": {
+    "type": "boolean"
+    }
+    }
+    }
+    },
+    "500": {
+    "description": "Internal server error"
+    }
+    }
+    }
+    }
+    },
+    "components": {
+    "schemas": {
+    "AuthResponse": {
+    "type": "object",
+    "properties": {
+    "token": {
+    "type": "string",
+    "nullable": true
+    },
+    "expiresAt": {
+    "type": "string",
+    "format": "date-time"
+    },
+    "user": {
+    "$ref": "#/components/schemas/User"
+    }
+    },
+    "additionalProperties": false
+    },
+    "CreateNewsDto": {
+    "required": [
+    "author",
+    "content",
+    "title"
+    ],
+    "type": "object",
+    "properties": {
+    "title": {
+    "maxLength": 200,
+    "minLength": 5,
+    "type": "string"
+    },
+    "content": {
+    "maxLength": 10000,
+    "minLength": 10,
+    "type": "string"
+    },
+    "author": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string"
+    },
+    "userId": {
+    "maxLength": 24,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "category": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "tags": {
+    "type": "array",
+    "items": {
+    "type": "string"
+    },
+    "nullable": true
+    },
+    "isPublished": {
+    "type": "boolean"
+    },
+    "summary": {
+    "maxLength": 500,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "imageUrl": {
+    "type": "string",
+    "format": "uri",
+    "nullable": true
+    },
+    "publishedDate": {
+    "type": "string",
+    "format": "date-time",
+    "nullable": true
+    }
+    },
+    "additionalProperties": false
+    },
+    "CreateUserDto": {
+    "required": [
+    "email",
+    "firstName",
+    "lastName",
+    "password",
+    "username"
+    ],
+    "type": "object",
+    "properties": {
+    "username": {
+    "maxLength": 50,
+    "minLength": 3,
+    "pattern": "^[a-zA-Z0-9_]+$",
+    "type": "string"
+    },
+    "email": {
+    "maxLength": 255,
+    "minLength": 0,
+    "type": "string",
+    "format": "email"
+    },
+    "password": {
+    "maxLength": 100,
+    "minLength": 6,
+    "type": "string"
+    },
+    "firstName": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string"
+    },
+    "lastName": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string"
+    },
+    "role": {
+    "maxLength": 20,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "profileImageUrl": {
+    "type": "string",
+    "format": "uri",
+    "nullable": true
+    },
+    "bio": {
+    "maxLength": 1000,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "dateOfBirth": {
+    "type": "string",
+    "format": "date-time",
+    "nullable": true
+    }
+    },
+    "additionalProperties": false
+    },
+    "LoginDto": {
+    "required": [
+    "password",
+    "usernameOrEmail"
+    ],
+    "type": "object",
+    "properties": {
+    "usernameOrEmail": {
+    "maxLength": 255,
+    "minLength": 0,
+    "type": "string"
+    },
+    "password": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string"
+    }
+    },
+    "additionalProperties": false
+    },
+    "News": {
+    "type": "object",
+    "properties": {
+    "id": {
+    "type": "string",
+    "nullable": true
+    },
+    "title": {
+    "type": "string",
+    "nullable": true
+    },
+    "content": {
+    "type": "string",
+    "nullable": true
+    },
+    "author": {
+    "type": "string",
+    "nullable": true
+    },
+    "userId": {
+    "type": "string",
+    "nullable": true
+    },
+    "publishedDate": {
+    "type": "string",
+    "format": "date-time"
+    },
+    "category": {
+    "type": "string",
+    "nullable": true
+    },
+    "tags": {
+    "type": "array",
+    "items": {
+    "type": "string"
+    },
+    "nullable": true
+    },
+    "isPublished": {
+    "type": "boolean"
+    },
+    "summary": {
+    "type": "string",
+    "nullable": true
+    },
+    "imageUrl": {
+    "type": "string",
+    "nullable": true
+    },
+    "createdAt": {
+    "type": "string",
+    "format": "date-time"
+    },
+    "updatedAt": {
+    "type": "string",
+    "format": "date-time"
+    }
+    },
+    "additionalProperties": false
+    },
+    "ProblemDetails": {
+    "type": "object",
+    "properties": {
+    "type": {
+    "type": "string",
+    "nullable": true
+    },
+    "title": {
+    "type": "string",
+    "nullable": true
+    },
+    "status": {
+    "type": "integer",
+    "format": "int32",
+    "nullable": true
+    },
+    "detail": {
+    "type": "string",
+    "nullable": true
+    },
+    "instance": {
+    "type": "string",
+    "nullable": true
+    }
+    },
+    "additionalProperties": {}
+    },
+    "RefreshTokenRequest": {
+    "required": [
+    "token"
+    ],
+    "type": "object",
+    "properties": {
+    "token": {
+    "minLength": 1,
+    "type": "string"
+    }
+    },
+    "additionalProperties": false
+    },
+    "UpdateNewsDto": {
+    "type": "object",
+    "properties": {
+    "title": {
+    "maxLength": 200,
+    "minLength": 5,
+    "type": "string",
+    "nullable": true
+    },
+    "content": {
+    "maxLength": 10000,
+    "minLength": 10,
+    "type": "string",
+    "nullable": true
+    },
+    "author": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "category": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "tags": {
+    "type": "array",
+    "items": {
+    "type": "string"
+    },
+    "nullable": true
+    },
+    "isPublished": {
+    "type": "boolean",
+    "nullable": true
+    },
+    "summary": {
+    "maxLength": 500,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "imageUrl": {
+    "type": "string",
+    "format": "uri",
+    "nullable": true
+    },
+    "publishedDate": {
+    "type": "string",
+    "format": "date-time",
+    "nullable": true
+    }
+    },
+    "additionalProperties": false
+    },
+    "UpdateUserDto": {
+    "type": "object",
+    "properties": {
+    "username": {
+    "maxLength": 50,
+    "minLength": 3,
+    "pattern": "^[a-zA-Z0-9_]+$",
+    "type": "string",
+    "nullable": true
+    },
+    "email": {
+    "maxLength": 255,
+    "minLength": 0,
+    "type": "string",
+    "format": "email",
+    "nullable": true
+    },
+    "firstName": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "lastName": {
+    "maxLength": 100,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "role": {
+    "maxLength": 20,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "isActive": {
+    "type": "boolean",
+    "nullable": true
+    },
+    "profileImageUrl": {
+    "type": "string",
+    "format": "uri",
+    "nullable": true
+    },
+    "bio": {
+    "maxLength": 1000,
+    "minLength": 0,
+    "type": "string",
+    "nullable": true
+    },
+    "dateOfBirth": {
+    "type": "string",
+    "format": "date-time",
+    "nullable": true
+    }
+    },
+    "additionalProperties": false
+    },
+    "User": {
+    "type": "object",
+    "properties": {
+    "id": {
+    "type": "string",
+    "nullable": true
+    },
+    "username": {
+    "type": "string",
+    "nullable": true
+    },
+    "email": {
+    "type": "string",
+    "nullable": true
+    },
+    "passwordHash": {
+    "type": "string",
+    "nullable": true
+    },
+    "firstName": {
+    "type": "string",
+    "nullable": true
+    },
+    "lastName": {
+    "type": "string",
+    "nullable": true
+    },
+    "role": {
+    "type": "string",
+    "nullable": true
+    },
+    "isActive": {
+    "type": "boolean"
+    },
+    "profileImageUrl": {
+    "type": "string",
+    "nullable": true
+    },
+    "bio": {
+    "type": "string",
+    "nullable": true
+    },
+    "dateOfBirth": {
+    "type": "string",
+    "format": "date-time",
+    "nullable": true
+    },
+    "createdAt": {
+    "type": "string",
+    "format": "date-time"
+    },
+    "updatedAt": {
+    "type": "string",
+    "format": "date-time"
+    },
+    "lastLoginAt": {
+    "type": "string",
+    "format": "date-time",
+    "nullable": true
+    }
+    },
+    "additionalProperties": false
+    }
+    },
+    "securitySchemes": {
+    "Bearer": {
+    "type": "apiKey",
+    "description": "JWT Authorization header using the Bearer scheme. Enter 'Bearer' [space] and then your token in the text input below.",
+    "name": "Authorization",
+    "in": "header"
+    }
+    }
+    },
+    "security": [
+    {
+    "Bearer": []
+    }
+    ]
+    }

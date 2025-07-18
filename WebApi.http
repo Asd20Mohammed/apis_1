@@ -1,0 +1,173 @@
+@WebApi_HostAddress = http://localhost:5093
+
+### Get all news
+GET {{WebApi_HostAddress}}/api/news
+Accept: application/json
+
+### Get published news
+GET {{WebApi_HostAddress}}/api/news/published
+Accept: application/json
+
+### Get news by category
+GET {{WebApi_HostAddress}}/api/news/category/technology
+Accept: application/json
+
+### Search news
+GET {{WebApi_HostAddress}}/api/news/search?searchTerm=breaking
+Accept: application/json
+
+### Create news (requires JWT authentication)
+POST {{WebApi_HostAddress}}/api/news
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "title": "Breaking News: Major Technology Update",
+  "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "author": "John Doe",
+  "category": "Technology",
+  "tags": ["tech", "breaking", "update"],
+  "summary": "A major technology update has been announced.",
+  "isPublished": true
+}
+
+### Get news by ID (replace with actual ID)
+GET {{WebApi_HostAddress}}/api/news/6123456789abcdef01234567
+Accept: application/json
+
+### Update news (requires JWT authentication - replace with actual ID)
+PUT {{WebApi_HostAddress}}/api/news/6123456789abcdef01234567
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "title": "Updated Breaking News Title",
+  "summary": "Updated summary of the news article."
+}
+
+### Delete news (requires JWT authentication - replace with actual ID)
+DELETE {{WebApi_HostAddress}}/api/news/6123456789abcdef01234567
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+###
+
+### ========== AUTH ENDPOINTS (JWT) ==========
+
+### Register user with JWT token
+POST {{WebApi_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "jwtuser",
+  "email": "jwt@example.com",
+  "password": "SecurePassword123",
+  "firstName": "JWT",
+  "lastName": "User",
+  "role": "User",
+  "bio": "User authenticated with JWT tokens"
+}
+
+### Login user with JWT token
+POST {{WebApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "jwtuser",
+  "password": "SecurePassword123"
+}
+
+### Get user profile (requires JWT token - add Bearer token from login response)
+GET {{WebApi_HostAddress}}/api/auth/profile
+Accept: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### Update user profile (requires JWT token)
+PUT {{WebApi_HostAddress}}/api/auth/profile
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "firstName": "JWT Updated",
+  "bio": "Updated profile with JWT authentication"
+}
+
+### Validate JWT token
+POST {{WebApi_HostAddress}}/api/auth/validate-token
+Content-Type: application/json
+
+{
+  "token": "YOUR_JWT_TOKEN_HERE"
+}
+
+### Refresh JWT token (requires current valid token)
+POST {{WebApi_HostAddress}}/api/auth/refresh
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+###
+
+### ========== USER ENDPOINTS ==========
+
+### Get all users
+GET {{WebApi_HostAddress}}/api/user
+Accept: application/json
+
+### Register new user
+POST {{WebApi_HostAddress}}/api/user/register
+Content-Type: application/json
+
+{
+  "username": "johndoe",
+  "email": "john.doe@example.com",
+  "password": "SecurePassword123",
+  "firstName": "John",
+  "lastName": "Doe",
+  "role": "User",
+  "bio": "A passionate news reader and contributor."
+}
+
+### Login user
+POST {{WebApi_HostAddress}}/api/user/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "johndoe",
+  "password": "SecurePassword123"
+}
+
+### Get user by ID (replace with actual ID)
+GET {{WebApi_HostAddress}}/api/user/6123456789abcdef01234567
+Accept: application/json
+
+### Get user by username
+GET {{WebApi_HostAddress}}/api/user/username/johndoe
+Accept: application/json
+
+### Get users by role
+GET {{WebApi_HostAddress}}/api/user/role/User
+Accept: application/json
+
+### Search users
+GET {{WebApi_HostAddress}}/api/user/search?searchTerm=john
+Accept: application/json
+
+### Update user (replace with actual ID)
+PUT {{WebApi_HostAddress}}/api/user/6123456789abcdef01234567
+Content-Type: application/json
+
+{
+  "firstName": "John Updated",
+  "bio": "Updated bio information"
+}
+
+### Check username availability
+GET {{WebApi_HostAddress}}/api/user/check-username/newusername
+Accept: application/json
+
+### Check email availability
+GET {{WebApi_HostAddress}}/api/user/check-email/test@example.com
+Accept: application/json
+
+### Delete user (replace with actual ID)
+DELETE {{WebApi_HostAddress}}/api/user/6123456789abcdef01234567
+
+###

@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:WebApi.Controllers.AuthController.Register(WebApi.Models.CreateUserDto)">
+            <summary>
+            Register a new user and return JWT token
+            </summary>
+            <param name="userDto">User registration data</param>
+            <returns>Authentication response with JWT token and user info</returns>
+            <response code="201">User registered successfully with JWT token</response>
+            <response code="400">Invalid input data or username/email already exists</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.Login(WebApi.Models.LoginDto)">
+            <summary>
+            Authenticate user and return JWT token
+            </summary>
+            <param name="loginDto">Login credentials</param>
+            <returns>Authentication response with JWT token and user info</returns>
+            <response code="200">Authentication successful with JWT token</response>
+            <response code="401">Invalid credentials</response>
+            <response code="400">Invalid input data</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.GetProfile">
+            <summary>
+            Get current user profile (requires authentication)
+            </summary>
+            <returns>Current user information</returns>
+            <response code="200">Returns current user profile</response>
+            <response code="401">Authentication required</response>
+            <response code="404">User not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.UpdateProfile(WebApi.Models.UpdateUserDto)">
+            <summary>
+            Update current user profile (requires authentication)
+            </summary>
+            <param name="userDto">User update data</param>
+            <returns>Updated user information</returns>
+            <response code="200">Profile updated successfully</response>
+            <response code="400">Invalid input data</response>
+            <response code="401">Authentication required</response>
+            <response code="404">User not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.ValidateToken(WebApi.Models.RefreshTokenRequest)">
+            <summary>
+            Validate JWT token
+            </summary>
+            <param name="request">Token validation request</param>
+            <returns>Token validation result</returns>
+            <response code="200">Token is valid</response>
+            <response code="400">Invalid or expired token</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.AuthController.RefreshToken">
+            <summary>
+            Refresh JWT token (requires authentication)
+            </summary>
+            <returns>New JWT token</returns>
+            <response code="200">Token refreshed successfully</response>
+            <response code="401">Authentication required</response>
+            <response code="404">User not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.GetAllNews">
+            <summary>
+            Get all news articles
+            </summary>
+            <returns>List of all news articles ordered by creation date</returns>
+            <response code="200">Returns the list of news articles</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.GetNewsById(System.String)">
+            <summary>
+            Get news by ID
+            </summary>
+            <param name="id">The MongoDB ObjectId of the news article</param>
+            <returns>The news article with the specified ID</returns>
+            <response code="200">Returns the news article</response>
+            <response code="404">News article not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.GetPublishedNews">
+            <summary>
+            Get published news articles
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.GetNewsByCategory(System.String)">
+            <summary>
+            Get news by category
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.SearchNews(System.String)">
+            <summary>
+            Search news articles
+            </summary>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.CreateNews(WebApi.Models.CreateNewsDto)">
+            <summary>
+            Create a new news article (requires authentication)
+            </summary>
+            <param name="newsDto">The news article data to create</param>
+            <returns>The created news article with generated ID</returns>
+            <response code="201">News article created successfully</response>
+            <response code="400">Invalid input data</response>
+            <response code="401">Authentication required</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.UpdateNews(System.String,WebApi.Models.UpdateNewsDto)">
+            <summary>
+            Update an existing news article (requires authentication)
+            </summary>
+            <param name="id">The news article ID to update</param>
+            <param name="newsDto">The news article data to update</param>
+            <returns>The updated news article</returns>
+            <response code="200">News article updated successfully</response>
+            <response code="400">Invalid input data</response>
+            <response code="401">Authentication required</response>
+            <response code="404">News article not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.NewsController.DeleteNews(System.String)">
+            <summary>
+            Delete a news article (requires authentication)
+            </summary>
+            <param name="id">The news article ID to delete</param>
+            <returns>No content on successful deletion</returns>
+            <response code="204">News article deleted successfully</response>
+            <response code="401">Authentication required</response>
+            <response code="404">News article not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetAllUsers">
+            <summary>
+            Get all users
+            </summary>
+            <returns>List of all users ordered by creation date</returns>
+            <response code="200">Returns the list of users</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetUserById(System.String)">
+            <summary>
+            Get user by ID
+            </summary>
+            <param name="id">The MongoDB ObjectId of the user</param>
+            <returns>The user with the specified ID</returns>
+            <response code="200">Returns the user</response>
+            <response code="404">User not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetUserByUsername(System.String)">
+            <summary>
+            Get user by username
+            </summary>
+            <param name="username">The username to search for</param>
+            <returns>The user with the specified username</returns>
+            <response code="200">Returns the user</response>
+            <response code="404">User not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetUsersByRole(System.String)">
+            <summary>
+            Get users by role
+            </summary>
+            <param name="role">The role to filter by</param>
+            <returns>List of users with the specified role</returns>
+            <response code="200">Returns the list of users</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.SearchUsers(System.String)">
+            <summary>
+            Search users
+            </summary>
+            <param name="searchTerm">Search term to look for in username, email, first name, or last name</param>
+            <returns>List of users matching the search term</returns>
+            <response code="200">Returns the list of users</response>
+            <response code="400">Search term is required</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.RegisterUser(WebApi.Models.CreateUserDto)">
+            <summary>
+            Register a new user
+            </summary>
+            <param name="userDto">The user data to create</param>
+            <returns>The created user with generated ID</returns>
+            <response code="201">User created successfully</response>
+            <response code="400">Invalid input data or username/email already exists</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.Login(WebApi.Models.LoginDto)">
+            <summary>
+            Authenticate a user
+            </summary>
+            <param name="loginDto">Login credentials</param>
+            <returns>The authenticated user information</returns>
+            <response code="200">Authentication successful</response>
+            <response code="401">Invalid credentials</response>
+            <response code="400">Invalid input data</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.UpdateUser(System.String,WebApi.Models.UpdateUserDto)">
+            <summary>
+            Update an existing user
+            </summary>
+            <param name="id">The user ID to update</param>
+            <param name="userDto">The user data to update</param>
+            <returns>The updated user</returns>
+            <response code="200">User updated successfully</response>
+            <response code="400">Invalid input data or username/email already exists</response>
+            <response code="404">User not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.DeleteUser(System.String)">
+            <summary>
+            Delete a user
+            </summary>
+            <param name="id">The user ID to delete</param>
+            <returns>No content on successful deletion</returns>
+            <response code="204">User deleted successfully</response>
+            <response code="404">User not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.CheckUsernameAvailability(System.String)">
+            <summary>
+            Check if username is available
+            </summary>
+            <param name="username">Username to check</param>
+            <returns>Boolean indicating availability</returns>
+            <response code="200">Returns availability status</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.CheckEmailAvailability(System.String)">
+            <summary>
+            Check if email is available
+            </summary>
+            <param name="email">Email to check</param>
+            <returns>Boolean indicating availability</returns>
+            <response code="200">Returns availability status</response>
+            <response code="500">Internal server error</response>
+        </member>
+    </members>
+</doc>
